@@ -14,6 +14,9 @@ uint8_t readline(char *buff, uint8_t maxbuff, uint16_t timeout = 0);
 
 uint8_t type;
 
+#include <Servo.h> 
+int servoPin = 3; 
+Servo Servo1; 
 
 
 
@@ -57,6 +60,8 @@ void setup() {
   lcd.begin (16, 2); // for 16 x 2 LCD module
   lcd.setBacklightPin(3, POSITIVE);
   lcd.setBacklight(HIGH);
+
+  Servo1.attach(servoPin);
 
   settings();
 
@@ -132,6 +137,11 @@ void lcddp () {
   delay(1000);
 }
 
+void motor(){
+   Servo1.write(180); 
+}
+
+
 
 
 void loop() {
@@ -167,13 +177,13 @@ void loop() {
   Serial.print("Distance: ");
   Serial.println(distance);
   
-  if (distance < 10) {
+  if (distance < 15) {
 
     digitalWrite(LedRed, HIGH);
     delay(500);
     digitalWrite(LedGreen, LOW);
     lcdup();
-
+    motor();
     tone(buzzer, 1000); // Send 1KHz sound signal...
     delay(1000);        // ...for 1 sec
     noTone(buzzer);     // Stop sound...
